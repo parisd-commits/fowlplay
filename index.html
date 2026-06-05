@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fowl Play | Browser Wave Survival Prototype</title>
+    <meta
+      name="description"
+      content="Fowl Play is a browser-based twin-stick wave survival prototype about gathering a flock, managing water ammo, and outlasting fox waves."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bowlby+One+SC&family=Nunito:wght@500;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-biome="farmyard">
+    <main class="game-shell" aria-label="Fowl Play playable prototype">
+      <canvas id="game-canvas" aria-label="Fowl Play game canvas"></canvas>
+
+      <section class="hud-top" aria-label="Game status">
+        <div class="hud-panel wave-panel">
+          <p class="eyebrow">Fowl Play</p>
+          <h1><span id="biome-label">Farmyard</span> <b id="wave-label">1</b></h1>
+          <div class="rank-strip">
+            <span id="rank-label">S</span>
+            <span id="wave-state-label">Wave Incoming</span>
+          </div>
+        </div>
+
+        <div class="hud-panel meter-panel">
+          <div class="meter-row">
+            <span>Health</span>
+            <b id="health-value">100</b>
+            <div class="meter">
+              <i id="health-fill"></i>
+            </div>
+          </div>
+          <div class="meter-row">
+            <span>Water</span>
+            <b id="water-value">40</b>
+            <div class="meter water">
+              <i id="water-fill"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="hud-panel score-panel">
+          <div>
+            <span>Score</span>
+            <strong id="score-label">0</strong>
+          </div>
+          <div>
+            <span>Best</span>
+            <strong id="best-label">0</strong>
+          </div>
+          <div>
+            <span>Flock</span>
+            <strong id="flock-label">0</strong>
+          </div>
+          <div>
+            <span>Parts</span>
+            <strong id="materials-label">0</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="pickup-banner" id="pickup-banner" aria-live="polite">
+        Wave 1
+      </section>
+
+      <section class="buff-rack" id="buff-rack" aria-label="Active modifiers"></section>
+
+      <section class="build-panel hud-panel" id="build-panel" aria-label="Build defenses">
+        <div class="build-header">
+          <span id="build-phase-label">Combat</span>
+          <strong><b id="build-materials-label">0</b> Parts</strong>
+        </div>
+        <div class="build-actions">
+          <button class="build-button" data-build="wall" type="button" title="Build Wall">
+            <span>WL</span>
+            <b>Wall</b>
+            <small>25</small>
+          </button>
+          <button class="build-button" data-build="turret" type="button" title="Build Turret">
+            <span>TR</span>
+            <b>Turret</b>
+            <small>55</small>
+          </button>
+          <button class="build-button" data-build="spikes" type="button" title="Build Spikes">
+            <span>SP</span>
+            <b>Spikes</b>
+            <small>35</small>
+          </button>
+        </div>
+        <div class="upgrade-actions" aria-label="Permanent watergun upgrades">
+          <button class="upgrade-button" data-upgrade="twin" type="button" title="Twin-mounted watergun">
+            <span>TW</span>
+            <b>Twin</b>
+            <small>60</small>
+          </button>
+          <button class="upgrade-button" data-upgrade="rapid" type="button" title="Rapid-fire pump">
+            <span>RF</span>
+            <b>Rapid</b>
+            <small>75</small>
+          </button>
+          <button class="upgrade-button" data-upgrade="shotgun" type="button" title="Shotgun-style sprayer">
+            <span>SG</span>
+            <b>Spray</b>
+            <small>90</small>
+          </button>
+          <button class="upgrade-button" data-upgrade="bazooka" type="button" title="Bazooka water cannon">
+            <span>BZ</span>
+            <b>Bazooka</b>
+            <small>120</small>
+          </button>
+        </div>
+        <button class="rotate-build-button" id="rotate-build-button" type="button">
+          Rotate 0
+        </button>
+        <button class="salvage-button" id="salvage-button" type="button">
+          Salvage
+        </button>
+        <button class="start-wave-button" id="start-wave-button" type="button">
+          Start Wave
+        </button>
+      </section>
+
+      <section class="hotbar" aria-label="Four slot weapon hotbar">
+        <div class="hotbar-ring"></div>
+        <div class="hotbar-core">
+          <span id="selected-code">WG</span>
+          <strong id="selected-label">Watergun</strong>
+        </div>
+        <button class="hotbar-slot slot-north selected" data-slot="0" type="button" title="Watergun">
+          <span class="slot-key">1</span>
+          <span class="slot-code">WG</span>
+          <small>Watergun</small>
+        </button>
+        <button class="hotbar-slot slot-east locked" data-slot="1" type="button" title="Tri-Barrel">
+          <span class="slot-key">2</span>
+          <span class="slot-code">3X</span>
+          <small>Tri-Barrel</small>
+        </button>
+        <button class="hotbar-slot slot-south locked" data-slot="2" type="button" title="Sword">
+          <span class="slot-key">3</span>
+          <span class="slot-code">SW</span>
+          <small>Sword</small>
+        </button>
+        <button class="hotbar-slot slot-west locked" data-slot="3" type="button" title="Hammer">
+          <span class="slot-key">4</span>
+          <span class="slot-code">HM</span>
+          <small>Hammer</small>
+        </button>
+      </section>
+
+      <div class="control-stack">
+        <button class="pause-button" id="pause-button" type="button" title="Pause run">
+          Pause
+        </button>
+        <button class="restart-button" id="restart-button" type="button" title="Restart run">
+          Restart
+        </button>
+      </div>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
